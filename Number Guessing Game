@@ -1,0 +1,55 @@
+import java.util.Random;
+import java.util.Scanner;
+
+public class NumberGuessingGame {
+
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+        Random random = new Random();
+
+        int lowerBound = 1;
+        int upperBound = 100;
+        int numberOfRounds = 3;
+        int totalScore = 0;
+
+        System.out.println("Welcome to the Number Guessing Game!");
+
+        for (int round = 1; round <= numberOfRounds; round++) {
+            System.out.println("\nRound " + round + " - New Game");
+
+            int targetNumber = random.nextInt(upperBound - lowerBound + 1) + lowerBound;
+            int attempts = 0;
+
+            while (true) {
+                System.out.print("Enter your guess between " + lowerBound + " and " + upperBound + ": ");
+                int userGuess = scanner.nextInt();
+                attempts++;
+
+                if (userGuess == targetNumber) {
+                    System.out.println("Congratulations! You guessed the correct number in " + attempts + " attempts.");
+                    int roundScore = calculateScore(attempts);
+                    totalScore += roundScore;
+                    System.out.println("Round Score: " + roundScore + " | Total Score: " + totalScore);
+                    break;
+                } else if (userGuess < targetNumber) {
+                    System.out.println("Try again. The number is higher.");
+                } else {
+                    System.out.println("Try again. The number is lower.");
+                }
+
+                if (attempts >= 3) {
+                    System.out.println("Sorry, you've reached the maximum number of attempts. The correct number was " + targetNumber);
+                    break;
+                }
+            }
+        }
+
+        System.out.println("\nGame Over. Your final score is: " + totalScore);
+        scanner.close();
+    }
+
+    private static int calculateScore(int attempts) {
+        // You can define your scoring logic here. For example, you can give more points for fewer attempts.
+        return 10 * (5 - Math.min(attempts, 5));
+    }
+}
